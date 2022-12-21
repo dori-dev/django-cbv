@@ -23,6 +23,7 @@ class UserList(generic.ListView):
     model = User
     template_name = 'app/user-list.html'
     context_object_name = 'users'
+    paginate_by = 12
 
 
 class GroupList(generic.ListView):
