@@ -31,3 +31,9 @@ class GroupList(generic.ListView):
     template_name = 'app/group-list.html'
     context_object_name = 'groups'
     paginate_by = 12
+
+
+class GroupDetail(generic.DetailView):
+    model = Group
+    template_name = 'app/group-detail.html'
+    # pk_url_kwarg = 'id'
