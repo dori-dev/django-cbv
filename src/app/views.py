@@ -57,3 +57,16 @@ class CreateGroup(generic.CreateView):
     def get_success_url(self) -> str:
         group: Group = self.object
         return reverse('group_detail', args=(group.pk,))
+
+
+class UpdateGroup(generic.UpdateView):
+    model = Group
+    fields = [
+        'name',
+        'permissions',
+    ]
+    template_name = 'app/create-group.html'
+
+    def get_success_url(self) -> str:
+        group: Group = self.object
+        return reverse('group_detail', args=(group.pk,))

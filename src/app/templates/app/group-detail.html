@@ -7,6 +7,10 @@
     <title>Group {{ group.name }}</title>
   </head>
   <body>
-    {{ group.name }}
+    <h1>{{ group.name }}</h1>
+    <h2>Permissions:</h2>
+    {% for permission in group.permissions.all %}
+      <h4>{{ permission.name }}</h4>
+    {% endfor %}
   </body>
 </html>
