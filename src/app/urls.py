@@ -29,4 +29,9 @@ urlpatterns = [
         views.UpdateGroup.as_view(),
         name='update_group',
     ),
+    path(
+        'delete-group/<int:pk>/',
+        views.DeleteGroup.as_view(),
+        name='delete_group',
+    ),
 ]

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group {{ group.name }}</title>
+  </head>
+  <body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{ group.name }}"?</p>
+        <input type="submit" value="Confirm">
+    </form>
+    <a href="{% url 'group_detail' group.pk %}">Back to group</a>
+  </body>
+</html>

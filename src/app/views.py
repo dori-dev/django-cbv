@@ -1,8 +1,7 @@
 # from django.shortcuts import render
-# from django.urls import reverse_lazy
 from django.contrib.auth.models import User, Group
 from django.views import generic
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 
 # class UserList(generic.View):
@@ -70,3 +69,10 @@ class UpdateGroup(generic.UpdateView):
     def get_success_url(self) -> str:
         group: Group = self.object
         return reverse('group_detail', args=(group.pk,))
+
+
+class DeleteGroup(generic.DeleteView):
+    model = Group
+    template_name = 'app/group-confirm-delete.html'
+    context_object_name = 'group'
+    success_url = reverse_lazy('group_list')
