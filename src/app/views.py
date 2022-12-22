@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User, Group
 from django.views import generic
 from django.urls import reverse, reverse_lazy
-
+from .import forms
 
 # class UserList(generic.View):
 #     def get(self, request, *args, **kwargs):
@@ -76,3 +76,19 @@ class DeleteGroup(generic.DeleteView):
     template_name = 'app/group-confirm-delete.html'
     context_object_name = 'group'
     success_url = reverse_lazy('group_list')
+
+
+class GroupForm(generic.FormView):
+    form_class = forms.GroupForm
+    template_name = 'app/create-group.html'
+
+    def form_valid(self, form):
+        group = Group.objects.create(
+            name=form.cleaned_data["name"],
+        )
+        group.permissions.set(form.cleaned_data["permissions"])
+        self.pk = group.pk
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse('group_detail', args=(self.pk,))

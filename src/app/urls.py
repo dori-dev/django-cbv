@@ -34,4 +34,9 @@ urlpatterns = [
         views.DeleteGroup.as_view(),
         name='delete_group',
     ),
+    path(
+        'group-form/',
+        views.GroupForm.as_view(),
+        name='group_form',
+    ),
 ]
