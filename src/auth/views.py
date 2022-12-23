@@ -39,6 +39,10 @@ class Login(views.LoginView):
     # redirect_authenticated_user = True
 
 
+class Logout(views.LogoutView):
+    template_name = "auth/logout.html"
+
+
 class ResetPassword(views.PasswordResetView):
     template_name = 'auth/reset-password.html'
     subject_template_name = 'auth/password-reset-subject.txt'
