@@ -1,7 +1,7 @@
 from django.views import generic
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
-from django.urls import reverse
+from django.contrib.auth import views
+from django.urls import reverse, reverse_lazy
 # from django.shortcuts import redirect
 from . import forms
 
@@ -33,7 +33,26 @@ class RegisterUser(generic.CreateView):
         return reverse('user_detail', args=(self.object.pk,))
 
 
-class Login(LoginView):
+class Login(views.LoginView):
     template_name = 'auth/login.html'
     redirect_field_name = None
-    redirect_authenticated_user = True
+    # redirect_authenticated_user = True
+
+
+class ResetPassword(views.PasswordResetView):
+    template_name = 'auth/reset-password.html'
+    subject_template_name = 'auth/password-reset-subject.txt'
+    success_url = reverse_lazy("password_reset_done")
+
+
+class ResetPasswordDone(generic.TemplateView):
+    template_name = 'auth/reset-password-done.html'
+
+
+class ResetPasswordConfirm(views.PasswordResetConfirmView):
+    template_name = 'auth/reset-password-confirm.html'
+    success_url = reverse_lazy("password_reset_complete")
+
+
+class ResetPasswordComplete(generic.TemplateView):
+    template_name = 'auth/reset-password-complete.html'
