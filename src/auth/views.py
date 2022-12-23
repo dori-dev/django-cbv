@@ -1,5 +1,6 @@
 from django.views import generic
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 from django.urls import reverse
 # from django.shortcuts import redirect
 from . import forms
@@ -30,3 +31,9 @@ class RegisterUser(generic.CreateView):
 
     def get_success_url(self) -> str:
         return reverse('user_detail', args=(self.object.pk,))
+
+
+class Login(LoginView):
+    template_name = 'auth/login.html'
+    redirect_field_name = None
+    redirect_authenticated_user = True
