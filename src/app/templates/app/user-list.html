@@ -7,8 +7,16 @@
     <title>User List</title>
   </head>
   <body>
+    <h1>All Users({{ users.count }} user{{ users.count|pluralize }})</h1>
+    <br>
     {% for user in users %}
-      <h3>{{ user.username }}</h3>
+      <h3>
+        <a href="{% url 'user_detail' user.id %}">
+          {{ user.username }}
+        </a>
+      </h3>
+      <h5>User ID: {{ user.id }}</h5>
+      <hr>
     {% endfor %}
 
     {% if page_obj.has_previous %}

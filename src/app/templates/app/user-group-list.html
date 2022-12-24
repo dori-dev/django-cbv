@@ -4,20 +4,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Group List</title>
+    <title>User in {{ group_name }} group</title>
   </head>
   <body>
-    {% for group in groups %}
+    <h1>User in {{ group_name}} group({{ users.count }} user{{ users.count|pluralize }})</h1>
+    <br>
+    {% for user in users %}
       <h3>
-        <a href="{% url 'group_detail' group.id %}">
-          {{ group.name }}
-        </a>
-        /
-        <a href="{% url 'users_group_list' group.name %}">
-          users in this group
+        <a href="{% url 'user_detail' user.id %}">
+          {{ user.username }}
         </a>
       </h3>
-      <h5>Group ID: {{ group.id }}</h5>
+      <h5>User ID: {{ user.id }}</h5>
+      <hr>
     {% endfor %}
 
     {% if page_obj.has_previous %}

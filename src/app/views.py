@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User, Group
 from django.views import generic
 from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
 from .import forms
 
 # class UserList(generic.View):
@@ -25,6 +26,29 @@ class UserList(generic.ListView):
     template_name = 'app/user-list.html'
     context_object_name = 'users'
     paginate_by = 12
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['users_count'] = User.objects.count()
+    #     return context
+
+
+class UserGroupList(generic.ListView):
+    template_name = 'app/user-group-list.html'
+    context_object_name = 'users'
+    paginate_by = 12
+
+    def get_queryset(self):
+        group_name = self.kwargs['group']
+        self.group = get_object_or_404(Group, name=group_name)
+        return User.objects.filter(
+            groups=self.group,
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group_name'] = self.group.name
+        return context
 
 
 class GroupList(generic.ListView):

@@ -10,6 +10,11 @@ urlpatterns = [
         name='user_list',
     ),
     path(
+        'users-in-group/<str:group>/',
+        views.UserGroupList.as_view(),
+        name='users_group_list',
+    ),
+    path(
         'groups/',
         views.GroupList.as_view(),
         name='group_list',
