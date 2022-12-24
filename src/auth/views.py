@@ -2,6 +2,7 @@ from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.auth import views
 from django.urls import reverse, reverse_lazy
+from django.utils.timezone import now
 # from django.shortcuts import redirect
 from . import forms
 
@@ -10,6 +11,12 @@ class UserDetail(generic.DetailView):
     model = User
     template_name = 'auth/user-detail.html'
     context_object_name = 'user'
+
+    def get_object(self, queryset=None):
+        user: User = super().get_object(queryset)
+        user.last_login = now()
+        user.save()
+        return user
 
 
 class RegisterUser(generic.CreateView):
