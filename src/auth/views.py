@@ -19,6 +19,16 @@ class UserDetail(generic.DetailView):
         return user
 
 
+class UserEdit(generic.UpdateView):
+    model = User
+    form_class = forms.UserEditFrom
+    template_name = 'auth/user-edit.html'
+    context_object_name = 'user'
+
+    def get_success_url(self) -> str:
+        return reverse('user_detail', args=(self.object.pk,))
+
+
 class RegisterUser(generic.CreateView):
     model = User
     # fields = [

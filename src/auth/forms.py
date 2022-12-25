@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -10,5 +11,17 @@ class UserRegisterForm(UserCreationForm):
         fields = [
             'first_name',
             'last_name',
+            'username',
+        ]
+
+
+class UserEditFrom(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'groups',
+            'first_name',
+            'last_name',
+            'email',
             'username',
         ]
