@@ -1,4 +1,6 @@
 # from django.shortcuts import render
+# from django.contrib.auth.decorators import login_required
+# from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.views import generic
 from django.urls import reverse, reverse_lazy
@@ -24,6 +26,7 @@ from .import forms
 #     }
 
 
+# @method_decorator(login_required, name='dispatch')
 class UserList(LoginRequiredMixin, generic.ListView):
     model = User
     template_name = 'app/user-list.html'
