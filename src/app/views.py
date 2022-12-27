@@ -5,10 +5,10 @@ from django.contrib.auth.models import User, Group
 from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .import forms
+from . import forms
+from . import mixins
 
 # class UserList(generic.View):
 #     def get(self, request, *args, **kwargs):
@@ -66,13 +66,13 @@ class UsersGroupAjax(LoginRequiredMixin, generic.TemplateView):
         return context
 
 
-class UsersGroupJson(generic.View):
+class UsersGroupJson(mixins.JSONResponseMixin, generic.View):
     def get(self, request: WSGIRequest):
         group_id = request.GET.get('group_id')
         users = User.objects.filter(
             groups=group_id
         ).values('username', 'id')
-        return JsonResponse(list(users), safe=False)
+        return self.render_to_json_response(users)
 
 
 class GroupList(LoginRequiredMixin, generic.ListView):
