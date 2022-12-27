@@ -4,10 +4,11 @@ from django.contrib.auth import views
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
 from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 
 
-class UserDetail(generic.DetailView):
+class UserDetail(LoginRequiredMixin, generic.DetailView):
     model = User
     template_name = 'auth/user-detail.html'
     context_object_name = 'user'
@@ -19,7 +20,7 @@ class UserDetail(generic.DetailView):
         return user
 
 
-class UserDetailRedirect(generic.View):
+class UserDetailRedirect(LoginRequiredMixin, generic.View):
     model = User
 
     def get(self, request):
@@ -27,7 +28,7 @@ class UserDetailRedirect(generic.View):
         return redirect(reverse('user_detail', args=(latest_user.pk,)))
 
 
-class UserEdit(generic.UpdateView):
+class UserEdit(LoginRequiredMixin, generic.UpdateView):
     model = User
     form_class = forms.UserEditFrom
     template_name = 'auth/user-edit.html'

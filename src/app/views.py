@@ -5,6 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .import forms
 
 # class UserList(generic.View):
@@ -23,7 +24,7 @@ from .import forms
 #     }
 
 
-class UserList(generic.ListView):
+class UserList(LoginRequiredMixin, generic.ListView):
     model = User
     template_name = 'app/user-list.html'
     context_object_name = 'users'
@@ -35,7 +36,7 @@ class UserList(generic.ListView):
     #     return context
 
 
-class UsersGroupList(generic.ListView):
+class UsersGroupList(LoginRequiredMixin, generic.ListView):
     template_name = 'app/user-group-list.html'
     context_object_name = 'users'
     paginate_by = 12
@@ -53,7 +54,7 @@ class UsersGroupList(generic.ListView):
         return context
 
 
-class UsersGroupAjax(generic.TemplateView):
+class UsersGroupAjax(LoginRequiredMixin, generic.TemplateView):
     template_name = 'app/user-group-ajax.html'
 
     def get_context_data(self, **kwargs):
@@ -71,7 +72,7 @@ class UsersGroupJson(generic.View):
         return JsonResponse(list(users), safe=False)
 
 
-class GroupList(generic.ListView):
+class GroupList(LoginRequiredMixin, generic.ListView):
     # queryset = Group.objects.order_by('name')
     model = Group
     template_name = 'app/group-list.html'
@@ -79,13 +80,13 @@ class GroupList(generic.ListView):
     paginate_by = 12
 
 
-class GroupDetail(generic.DetailView):
+class GroupDetail(LoginRequiredMixin, generic.DetailView):
     model = Group
     template_name = 'app/group-detail.html'
     # pk_url_kwarg = 'id'
 
 
-class CreateGroup(generic.CreateView):
+class CreateGroup(LoginRequiredMixin, generic.CreateView):
     model = Group
     fields = [
         'name',
@@ -102,7 +103,7 @@ class CreateGroup(generic.CreateView):
         return reverse('group_detail', args=(group.pk,))
 
 
-class UpdateGroup(generic.UpdateView):
+class UpdateGroup(LoginRequiredMixin, generic.UpdateView):
     model = Group
     fields = [
         'name',
@@ -115,14 +116,14 @@ class UpdateGroup(generic.UpdateView):
         return reverse('group_detail', args=(group.pk,))
 
 
-class DeleteGroup(generic.DeleteView):
+class DeleteGroup(LoginRequiredMixin, generic.DeleteView):
     model = Group
     template_name = 'app/group-confirm-delete.html'
     context_object_name = 'group'
     success_url = reverse_lazy('group_list')
 
 
-class GroupForm(generic.FormView):
+class GroupForm(LoginRequiredMixin, generic.FormView):
     form_class = forms.GroupForm
     template_name = 'app/create-group.html'
 
