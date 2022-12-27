@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Group Ajax</title>
+  </head>
+  <body>
+    <p>
+      Group:
+      <select name="groups" id="groups">
+        <option value="0">Select group...</option>
+        {% for group in groups %}
+            <option value="{{ group.id }}">
+                {{ group.name }}
+            </option>
+        {% endfor %}
+      </select>
+    </p>
+    <hr />
+    <div>
+      <ul id="users"></ul>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $("#groups").change(function () {
+        $("#users").empty();
+        var groupId = $(this).val();
+        $.ajax({
+          url: "{{ request.scheme }}://{{ request.get_host }}{% url 'users_group_json' %}",
+          data: {
+            group_id: groupId,
+          },
+          dataType: "json",
+          success: function (data) {
+            $.map(data, function (value) {
+              $("#users").append(
+                `<li><a target="_blank" href="{% url 'user_detail_redirect' %}${value.id}/">${value.username}</a></li>`
+              );
+            });
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from django.views import generic
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.core.handlers.wsgi import WSGIRequest
 from .import forms
 
 # class UserList(generic.View):
@@ -33,7 +35,7 @@ class UserList(generic.ListView):
     #     return context
 
 
-class UserGroupList(generic.ListView):
+class UsersGroupList(generic.ListView):
     template_name = 'app/user-group-list.html'
     context_object_name = 'users'
     paginate_by = 12
@@ -49,6 +51,24 @@ class UserGroupList(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['group_name'] = self.group.name
         return context
+
+
+class UsersGroupAjax(generic.TemplateView):
+    template_name = 'app/user-group-ajax.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['groups'] = Group.objects.all()
+        return context
+
+
+class UsersGroupJson(generic.View):
+    def get(self, request: WSGIRequest):
+        group_id = request.GET.get('group_id')
+        users = User.objects.filter(
+            groups=group_id
+        ).values('username', 'id')
+        return JsonResponse(list(users), safe=False)
 
 
 class GroupList(generic.ListView):

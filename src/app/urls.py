@@ -11,8 +11,18 @@ urlpatterns = [
     ),
     path(
         'users-in-group/<str:group>/',
-        views.UserGroupList.as_view(),
+        views.UsersGroupList.as_view(),
         name='users_group_list',
+    ),
+    path(
+        'users-in-group/',
+        views.UsersGroupAjax.as_view(),
+        name='users_group_ajax',
+    ),
+    path(
+        'users-in-group-json/',
+        views.UsersGroupJson.as_view(),
+        name='users_group_json',
     ),
     path(
         'groups/',
