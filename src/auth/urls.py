@@ -10,6 +10,11 @@ urlpatterns = [
         name='user_detail',
     ),
     path(
+        'user/',
+        views.UserDetailRedirect.as_view(),
+        name='user_detail_redirect',
+    ),
+    path(
         'user-edit/<int:pk>/',
         views.UserEdit.as_view(),
         name='user_edit',

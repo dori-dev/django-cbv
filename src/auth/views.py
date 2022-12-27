@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import views
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
-# from django.shortcuts import redirect
+from django.shortcuts import redirect
 from . import forms
 
 
@@ -17,6 +17,14 @@ class UserDetail(generic.DetailView):
         user.last_login = now()
         user.save()
         return user
+
+
+class UserDetailRedirect(generic.View):
+    model = User
+
+    def get(self, request):
+        latest_user = self.model.objects.last()
+        return redirect(reverse('user_detail', args=(latest_user.pk,)))
 
 
 class UserEdit(generic.UpdateView):
